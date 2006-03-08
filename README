@@ -1,0 +1,32 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1488
+
+SYNOPSIS:
+   This is colorscheme Scroller/Chooser/Browser.
+   With this plugin, you walk through installed colorschemes using arrow keys.
+
+SHORT USAGE DESCRIPTION:
+   Drop ScrollColors.vim into your plugin directory.
+   Type :SCROLL
+   Use arrow keys to walk through colorschemes, ? for help, Esc to exit.
+
+ DETAILED DESCRIPTION:
+   1. source ScrollColors.vim  " or drop ScrollColors.vim into
+                          " your ~/.vim/plugins directory
+   2. Type :SCROLL
+        Another synonym is :COLOR
+   3. Use arrows to scroll thgough colorschemes.
+   4. When done, press Esc to exit. You will be prompted
+      wether to
+
+   You can download 140 colorschemes pack from:
+        http://www.vim.org/scripts/script.php?script_id=625
+   Having 140 installed colorschemes is in no way prerequisite for ScrollColors. But with ScrollColors you can preview 140 colorschemes  in couple of minutes. Have fun.
+
+CUSTOM KEY MAPPINGS:
+   You can map two keys of your choice to NextColor and PrevColor actions.
+   Choose pair of shortcut keys (for example <F2> and <f3>, or \n and \p)
+   and map them as follows:
+      map <silent><F3> :NEXTCOLOR<cr>
+      map <silent><F2> :PREVCOLOR<cr>
+
+Works both in vim6 and vim7.
