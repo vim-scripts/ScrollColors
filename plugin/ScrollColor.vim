@@ -295,6 +295,21 @@ function! s:RemoveDuplicates(list)
     return res
 endfu
 
+if v:version >= 700
+
+" s:SortVar(): sort components of string @var separated
+" by delimiter @sep, and returns the sorted string.
+" For example, s:SortVar("c\nb\na", "\n") returns "a\nb\nc\n"
+function! s:SortVar(list, sep)
+    let list = split( a:list, a:sep )
+    let sorted = sort(list)
+    let result = join( sorted, "\n" )
+    return result . "\n"
+endfun
+
+endif
+
+if v:version < 700
 " s:SortVar(): sort components of string @var separated
 " by delimiter @sep, and returns the sorted string.
 " For example, s:SortVar("c\nb\na", "\n") returns "a\nb\nc\n"
@@ -333,6 +348,7 @@ function! s:SortVar(list, sep)
    endw
    return res
 endfu
+endif " v:version < 700
 
 let s:list = ""
 
@@ -438,3 +454,4 @@ map \c :echo g:colors_name<cr>
 " 2006-07-18 fixed bug with Align() -> s:Align() (affected L command)
 " 2006-07-18 added colorlist cache (s:list)
 " 2006-07-18 added R key to refresh colorlist
+" 2006-07-19 for vim7, sort using builtin sort() (bubblesort is slow)
