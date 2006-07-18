@@ -1,7 +1,7 @@
 " ScrollColors.vim - Colorsheme Scroller, Chooser, and Browser
 "
 "     Author and maintainer: Yakov Lerner <iler_ml@fastmail.fm>
-"     Last Change: 2006-03-08
+"     Last Change: 2006-07-18
 "
 " SYNOPSIS:
 "   This is colorscheme Scroller/Chooser/Browser.
@@ -62,6 +62,7 @@ function! s:ScrollerHelp()
     echo "L            - list colorschemes"
     echo "PgUp,PgDown  - jump by 10 colorschemes"
     echo "#            - go to colorscheme by index (1-N)"
+    echo "R            - refresh colorscheme list"
     echo "?            - this help text"
     echohl MoreMsg
     echo "Press any key to continue"
@@ -91,7 +92,7 @@ function! s:ListColors()
     while list != ''
         let str=substitute(list,"\n.*","","")
         let list=substitute(list,"[^\n]*\n", "", "")
-        let aligned = Align(str, width)
+        let aligned = s:Align(str, width)
         if( pos+strlen(aligned)+1 >= &columns)
             echo " "
             let pos=0
@@ -230,6 +231,10 @@ function! s:ColorScroller()
             call s:JumpByIndex2(list,total, index+10)
         elseif c == '?'
             call s:ScrollerHelp()
+        elseif c == 'R'
+            call s:RefreshColorschemesList()
+            echo "Colorscheme list refreshed. Press any key to continue."
+            call getchar()
         else
             call s:ScrollerHelp()
         endif
@@ -329,12 +334,23 @@ function! s:SortVar(list, sep)
    return res
 endfu
 
-function! s:GetColorschemesList() 
+let s:list = ""
+
+function! s:GetColorschemesList()
+   if s:list == ""
+       let s:list = s:RefreshColorschemesList()
+   endif
+   return s:list
+endfunction
+
+
+function! s:RefreshColorschemesList() 
     let x=globpath(&rtp, "colors/*.vim")
     let y=substitute(x."\n","\\(^\\|\n\\)[^\n]*[/\\\\]", "\n", "g")
     let z=substitute(y,"\\.vim\n", "\n", "g")
     let sorted = s:SortVar(z, "\n")
-    return s:RemoveDuplicates(sorted)
+    let s:list = s:RemoveDuplicates(sorted)
+    return s:list
 endfun
 
 function! s:GetFirstColors() 
@@ -419,7 +435,6 @@ map \n :CN<cr>
 map \p :CP<cr>
 map \c :echo g:colors_name<cr>
 
-" ** WishList **
-" PgUp, PgDn
-" EntryByIndex
- " show index in the prompt
+" 2006-07-18 fixed bug with Align() -> s:Align() (affected L command)
+" 2006-07-18 added colorlist cache (s:list)
+" 2006-07-18 added R key to refresh colorlist
